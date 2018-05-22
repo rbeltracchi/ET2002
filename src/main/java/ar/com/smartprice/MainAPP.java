@@ -5,12 +5,14 @@
  */
 package ar.com.smartprice;
 
+import ar.com.smartprice.controllers.ViewsController;
+
 /**
  *
  * @author Andres
  */
 public class MainAPP {
     public static void main(String[] args) {
-        
+        ViewsController.mainView();
     }
 }
