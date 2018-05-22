@@ -1,2 +1,2 @@
-# smarb
-SMARB - Smart Buy
+# SmartPrice
+SMARTPRICE
