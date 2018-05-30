@@ -18,7 +18,7 @@ public class UserDto {
     private String email;
     private String cuit;
     private String businessName;
-    private String pass;
+    private String password;
     private int userType;
     private int userId;
     private SPError error;
@@ -28,13 +28,13 @@ public class UserDto {
         
     }
     
-    public UserDto(String name, String lastName, String email, String cuit, String businessName, String pass, int userType, int userId, SPError error, String token) {
+    public UserDto(String name, String lastName, String email, String cuit, String businessName, String password, int userType, int userId, SPError error, String token) {
         this.name = name;
         this.lastName = lastName;
         this.email = email;
         this.cuit = cuit;
         this.businessName = businessName;
-        this.pass = pass;
+        this.password = password;
         this.userType = userType;
         this.userId = userId;
         this.error = error;
@@ -81,12 +81,12 @@ public class UserDto {
         this.businessName = businessName;
     }
 
-    public String getPass() {
-        return pass;
+    public String getPassword() {
+        return password;
     }
 
-    public void setPass(String pass) {
-        this.pass = pass;
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     public int getUserType() {

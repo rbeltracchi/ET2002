@@ -12,14 +12,14 @@ package ar.com.smartprice.dtos;
 public class CredentialsDto {
     
     private String email;
-    private String pass;
+    private String password;
 
     public CredentialsDto() {
     }
 
-    public CredentialsDto(String email, String pass) {
+    public CredentialsDto(String email, String password) {
         this.email = email;
-        this.pass = pass;
+        this.password = password;
     }
 
     public String getEmail() {
@@ -30,14 +30,12 @@ public class CredentialsDto {
         this.email = email;
     }
 
-    public String getPass() {
-        return pass;
+    public String getPassword() {
+        return password;
     }
 
-    public void setPass(String pass) {
-        this.pass = pass;
+    public void setPassword(String password) {
+        this.password = password;
     }
-    
-    
-    
+  
 }
