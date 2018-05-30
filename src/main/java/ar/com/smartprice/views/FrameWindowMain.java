@@ -5,6 +5,8 @@
  */
 package ar.com.smartprice.views;
 
+import java.awt.BorderLayout;
+
 /**
  *
  * @author ze
@@ -16,6 +18,24 @@ public class FrameWindowMain extends javax.swing.JFrame {
      */
     public FrameWindowMain() {
         initComponents();
+        
+        LoginPanel logP = new LoginPanel();
+        logP.setSize(220, 364);
+        logP.setLocation(2, 5);
+        
+        mainPanel1.removeAll();
+        mainPanel1.add(logP, BorderLayout.CENTER);
+        mainPanel1.revalidate();
+        mainPanel1.repaint();
+        
+        SignInButtonPanel signInButton = new SignInButtonPanel();
+        signInButton.setSize(220, 100);
+        signInButton.setLocation(2, 5);
+        
+        mainPanel2.removeAll();
+        mainPanel2.add(signInButton, BorderLayout.CENTER);
+        mainPanel2.revalidate();
+        mainPanel2.repaint();
     }
 
     /**
@@ -27,18 +47,59 @@ public class FrameWindowMain extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        mainPanel1 = new javax.swing.JPanel();
+        mainPanel2 = new javax.swing.JPanel();
+
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("SmartPrice\n");
+        setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        setPreferredSize(new java.awt.Dimension(800, 600));
+
+        mainPanel1.setPreferredSize(new java.awt.Dimension(220, 364));
+
+        javax.swing.GroupLayout mainPanel1Layout = new javax.swing.GroupLayout(mainPanel1);
+        mainPanel1.setLayout(mainPanel1Layout);
+        mainPanel1Layout.setHorizontalGroup(
+            mainPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 220, Short.MAX_VALUE)
+        );
+        mainPanel1Layout.setVerticalGroup(
+            mainPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 364, Short.MAX_VALUE)
+        );
+
+        mainPanel2.setPreferredSize(new java.awt.Dimension(220, 100));
+
+        javax.swing.GroupLayout mainPanel2Layout = new javax.swing.GroupLayout(mainPanel2);
+        mainPanel2.setLayout(mainPanel2Layout);
+        mainPanel2Layout.setHorizontalGroup(
+            mainPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 220, Short.MAX_VALUE)
+        );
+        mainPanel2Layout.setVerticalGroup(
+            mainPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 100, Short.MAX_VALUE)
+        );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 400, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(mainPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(mainPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(570, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 300, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(mainPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(mainPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(119, Short.MAX_VALUE))
         );
 
         pack();
@@ -81,5 +142,7 @@ public class FrameWindowMain extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JPanel mainPanel1;
+    private javax.swing.JPanel mainPanel2;
     // End of variables declaration//GEN-END:variables
 }

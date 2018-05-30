@@ -9,12 +9,12 @@ package ar.com.smartprice.views;
  *
  * @author ze
  */
-public class searcherPanel extends javax.swing.JPanel {
+public class SearcherPanel extends javax.swing.JPanel {
 
     /**
      * Creates new form searcherPanel
      */
-    public searcherPanel() {
+    public SearcherPanel() {
         initComponents();
     }
 
