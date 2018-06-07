@@ -148,5 +148,11 @@ public class PyS_DBAdmin {
         return m;
     }
     
-
+      //Se obtienen todas las categorías cargadas
+    public List<Categoria> obtenerTodasCategorias (){
+        if (em==null) em = emf.createEntityManager();
+        TypedQuery<Categoria> c=em.createNamedQuery("Categoria.findAll", Categoria.class);
+        List<Categoria>categorias=c.getResultList();
+        return categorias;
+    }   
 }

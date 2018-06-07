@@ -37,7 +37,8 @@ import javax.xml.bind.annotation.XmlTransient;
     , @NamedQuery(name = "ProductoYServicio.findByIdproductosYServicios", query = "SELECT p FROM ProductoYServicio p WHERE p.idproductosYServicios = :idproductosYServicios")
     , @NamedQuery(name = "ProductoYServicio.findByNombre", query = "SELECT p FROM ProductoYServicio p WHERE p.nombre = :nombre")
     , @NamedQuery(name = "ProductoYServicio.findByNombreYMarca", query = "SELECT p FROM ProductoYServicio p WHERE p.nombre = :nombre and p.idMarca = :idMarca")
-    , @NamedQuery(name = "ProductoYServicio.findByDescripcion", query = "SELECT p FROM ProductoYServicio p WHERE p.descripcion = :descripcion")})
+    , @NamedQuery(name = "ProductoYServicio.findByDescripcion", query = "SELECT p FROM ProductoYServicio p WHERE p.descripcion = :descripcion")
+    , @NamedQuery(name = "ProductoYServicio.findByCategoria", query = "SELECT p FROM ProductoYServicio p WHERE p.idCategoria = :idCategoria")})
 public class ProductoYServicio implements Serializable {
 
     @Lob

@@ -47,4 +47,15 @@ public class Search_DBAdmin {
             return null;
         return precios;
     }
+    
+    //Trae los productos que satisfacen una categoria
+    public List<ProductoYServicio> getProductosByCategoria(Categoria cat){
+        if (em==null) em = emf.createEntityManager();
+        TypedQuery<ProductoYServicio> q = em.createNamedQuery("ProductoYServicio.findByCategoria", ProductoYServicio.class);
+        q.setParameter("idCategoria", cat.getIdCategoria());
+        List<ProductoYServicio> productos = q.getResultList();
+        if (productos.isEmpty())
+            return null;
+        return productos;
+    }
 }
