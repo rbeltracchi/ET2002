@@ -34,29 +34,32 @@ public class Authentication {
      * Recibe un UserDto del cual obtiene su userId, email y userType y genera el token con tiempo de expiracion
      * @param user UserDto
      * @return String retorna el token generado
-     * @throws UnsupportedEncodingException 
+     *
      */
-    public static String createToken(UserDto user) throws UnsupportedEncodingException {
+    public static String createToken(UserDto user){
 
-        long nowMillis = System.currentTimeMillis();
-        Date now = new Date(nowMillis);
-        long expMillis = nowMillis + EXPIRATIONTIMEMILLIS;
-        Date expiration = new Date(expMillis);
-
-        System.out.println("UserId:" + user.getUserId());
-
-        return Jwts.builder()
-                .setId("" + user.getUserId())
-                //.setSubject(""+user.getUserId())
-                .setIssuedAt(now)
-                .setExpiration(expiration)
-                .claim("email", user.getEmail())
-                .claim("userType", ""+user.getUserType())
-                .signWith(
-                        SignatureAlgorithm.HS256,
-                        ULTRASECURITYKEY.getBytes("UTF-8")
-                )
-                .compact();
+        try {
+            long nowMillis = System.currentTimeMillis();
+            Date now = new Date(nowMillis);
+            long expMillis = nowMillis + EXPIRATIONTIMEMILLIS;
+            Date expiration = new Date(expMillis);
+            
+            return Jwts.builder()
+                    .setId("" + user.getUserId())
+                    
+                    .setIssuedAt(now)
+                    .setExpiration(expiration)
+                    .claim("email", user.getEmail())
+                    .claim("userType", ""+user.getUserType())
+                    .signWith(
+                            SignatureAlgorithm.HS256,
+                            ULTRASECURITYKEY.getBytes("UTF-8")
+                    )
+                    .compact();
+        } catch (UnsupportedEncodingException ex) {
+            Logger.getLogger(Authentication.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return null;
     }
     
     /**
