@@ -13,6 +13,6 @@ import ar.com.smartprice.controllers.ViewsController;
  */
 public class MainAPP {
     public static void main(String[] args) {
-        ViewsController.mainView();
+        
     }
 }

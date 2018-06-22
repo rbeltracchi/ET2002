@@ -5,6 +5,8 @@
  */
 package ar.com.smartprice.models;
 
+import ar.com.smartprice.models.services.Users_DBAdmin;
+
 /**
  *
  * @author Agustin
@@ -18,7 +20,7 @@ public class Session {
     String error;
 
     public Session(String email, String pass) {
-        Usuario usr = users.getByEmail(email);
+        Usuario usr = users.getUsuarioByEmail(email);
         if (usr != null){
             if (!usr.getPassword().equals(pass)){
                 error="Contraseña Incorrecta";
