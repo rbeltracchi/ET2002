@@ -21,7 +21,7 @@ public class CategoriesService {
     EntityManagerFactory emf = Persistence.createEntityManagerFactory("SmartPricePU");
     EntityManager em = null;
 
-    //Se obtienen todas las categorías cargadas
+    //Se obtienen todas las categorías cargadas.
     public List<Categoria> obtenerTodasCategorias() {
         if (em == null) {
             em = emf.createEntityManager();
