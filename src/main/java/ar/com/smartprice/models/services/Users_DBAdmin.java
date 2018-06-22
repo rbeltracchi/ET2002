@@ -3,8 +3,11 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package ar.com.smartprice.models;
+package ar.com.smartprice.models.services;
 
+import ar.com.smartprice.models.Categoria;
+import ar.com.smartprice.models.Oferente;
+import ar.com.smartprice.models.Usuario;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -25,7 +28,7 @@ public class Users_DBAdmin {
         if (usr==null)
             return;
         
-        Usuario yaCargado = this.getByEmail(usr.getEmail());
+        Usuario yaCargado = this.getUsuarioByEmail(usr.getEmail());
         if (yaCargado!=null) return;
         
         if (em==null)
@@ -43,7 +46,7 @@ public class Users_DBAdmin {
             return;
         //Si no es el de la base de datos, lo traigo
         if (usr.getIdUsuario() == 0) 
-            usr = this.getByEmail(usr.getEmail());
+            usr = this.getUsuarioByEmail(usr.getEmail());
         
         if (usr == null)
             return; //EL usuario no estaba cargado en la BD
@@ -61,7 +64,7 @@ public class Users_DBAdmin {
         if (usr== null)
             return;
         if (usr.getIdUsuario()==0)
-            usr = this.getByEmail(usr.getEmail());
+            usr = this.getUsuarioByEmail(usr.getEmail());
         
         if (usr == null)
             return; //EL usuario no estaba cargado en la BD
@@ -96,7 +99,7 @@ public class Users_DBAdmin {
     }
     
     // Trae un usuario por su email, si no existe, trae null
-    public Usuario getByEmail(String email){
+    public Usuario getUsuarioByEmail(String email){
         if (em==null){
             em = emf.createEntityManager();
         }
@@ -110,6 +113,25 @@ public class Users_DBAdmin {
             return null;
         Usuario usr = usrs.get(0);//Si no hay usuario devuelve NULL
         return usr;
+    }
+    
+    public boolean actualizarUsuario(Usuario user) {
+
+        boolean exito = false;
+        if (em == null) {
+            em = emf.createEntityManager();
+        }
+        em.getTransaction().begin();
+
+        if (this.getUsuarioByEmail(user.getEmail()) == null) {
+            exito = false;
+        } else {
+            em.merge(user);
+
+            exito = true;
+        }
+        em.getTransaction().commit();
+        return exito;
     }
     
     public int cantOferentes(){
@@ -134,4 +156,5 @@ public class Users_DBAdmin {
             return null;
         else return oferentesCargados;
     }
+    
 }

@@ -5,6 +5,11 @@
  */
 package ar.com.smartprice.models;
 
+import ar.com.smartprice.models.services.BrandsService;
+import ar.com.smartprice.models.services.CategoriesService;
+import ar.com.smartprice.models.services.PyS_DBAdmin;
+import ar.com.smartprice.models.services.Search_DBAdmin;
+import ar.com.smartprice.models.services.Users_DBAdmin;
 import java.util.List;
 
 /**
@@ -16,20 +21,22 @@ public class Services {
     Users_DBAdmin admin_usuarios = new Users_DBAdmin();
     PyS_DBAdmin admin_productos = new PyS_DBAdmin();
     Search_DBAdmin admin_busquedas = new Search_DBAdmin();
+    BrandsService brandService = new BrandsService();
+    CategoriesService categoriesServices = new CategoriesService();
     
     public void insertarProducto(String nombre, String marca, String categoria, String descripcion){
-        Marca marcaCargada = admin_productos.cargarMarca(marca);
-        Categoria idCategoria = admin_productos.cargarCategoria(categoria);
+        Marca marcaCargada = brandService.cargarMarca(marca);
+        Categoria idCategoria = categoriesServices.cargarCategoria(categoria);
         ProductoYServicio pys = new ProductoYServicio(nombre, marcaCargada, idCategoria, descripcion);
         
         boolean exito = admin_productos.insertarProducto(pys);
         if (!exito){
-            System.out.println("EXEPCION EL PRODUCTO YA EXISTIA");
+            System.out.println("EXCEPCION EL PRODUCTO YA EXISTIA");
         }
     }
     
     public List<ProductoYServicio> buscarProductos(String nombre,String cat){
-        Categoria categoria = admin_productos.getCategoria(cat);
+        Categoria categoria = categoriesServices.getCategoria(cat);
         List<ProductoYServicio> productos = admin_busquedas.getProductosByNombre(nombre);
         return productos;
     }

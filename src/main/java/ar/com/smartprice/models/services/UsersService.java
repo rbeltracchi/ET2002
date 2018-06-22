@@ -5,7 +5,6 @@ import ar.com.smartprice.dtos.CredentialsDto;
 import ar.com.smartprice.dtos.TokenInfoDto;
 import ar.com.smartprice.dtos.UserDto;
 import ar.com.smartprice.models.Oferente;
-import ar.com.smartprice.models.Users_DBAdmin;
 import ar.com.smartprice.models.Usuario;
 import ar.com.smartprice.utils.Authentication;
 import ar.com.smartprice.utils.Cryptography;
@@ -94,7 +93,7 @@ public class UsersService {
 
         Users_DBAdmin usersDb = new Users_DBAdmin();
 
-        Usuario user = usersDb.getByEmail(credentials.getEmail());
+        Usuario user = usersDb.getUsuarioByEmail(credentials.getEmail());
 
         //??
         //Oferente user = usersDb.getByEmail(credentials.getEmail());

@@ -3,8 +3,11 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package ar.com.smartprice.models;
+package ar.com.smartprice.models.services;
 
+import ar.com.smartprice.models.Categoria;
+import ar.com.smartprice.models.PrecioRegular;
+import ar.com.smartprice.models.ProductoYServicio;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
