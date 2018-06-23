@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package ar.com.smartprice.utils;
+package ar.com.smartprice.models.mappers;
 
 import ar.com.smartprice.dtos.UserDto;
 import ar.com.smartprice.models.Usuario;
