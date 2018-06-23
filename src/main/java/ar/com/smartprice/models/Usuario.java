@@ -43,7 +43,7 @@ public class Usuario implements Serializable {
 
     private static final long serialVersionUID = 15L;
     @Id
-    @GeneratedValue(strategy=GenerationType.AUTO)
+    //@GeneratedValue(strategy=GenerationType.AUTO)
     @Basic(optional = false)
     @Column(name = "id_usuario")
     private Integer idUsuario;
@@ -80,7 +80,11 @@ public class Usuario implements Serializable {
     public Integer getIdUsuario() {
         return idUsuario;
     }
-
+    
+    public void setIdUsuario(Integer idUsuario) {
+        this.idUsuario = idUsuario;
+    }
+    
     public String getEmail() {
         return email;
     }
