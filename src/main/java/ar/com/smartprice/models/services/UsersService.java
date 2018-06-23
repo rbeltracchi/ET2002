@@ -8,7 +8,7 @@ import ar.com.smartprice.models.Oferente;
 import ar.com.smartprice.models.Usuario;
 import ar.com.smartprice.utils.Authentication;
 import ar.com.smartprice.utils.Cryptography;
-import ar.com.smartprice.utils.Mapper;
+import ar.com.smartprice.models.mappers.UsersMapper;
 import ar.com.smartprice.utils.SPError;
 
 /**
@@ -26,7 +26,28 @@ public class UsersService {
      * @return
      */
     public boolean create(UserDto user) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.        
+
+        boolean success = false;
+
+        //controlar que este todo completo
+        if (user.getEmail() == null || user.getEmail().isEmpty()) {
+            return success;
+        }
+        //Encriptamos la contraseña del usuario
+        user.setPassword(Cryptography.encrypt(user.getPassword(), user.getEmail()));
+
+        Usuario usuario = UsersMapper.userDtoToUsuario(user);
+        Users_DBAdmin userDb = new Users_DBAdmin();
+
+        switch (user.getUserType()) {
+            case 2:
+                success = userDb.insertarUsuario(usuario);
+                break;
+            case 3:
+                System.out.println("[UsersService] La creacion del oferente no esta implementado");
+                break;
+        }
+        return success;
     }
 
     /**
@@ -36,8 +57,27 @@ public class UsersService {
      * @return
      *
      */
-    public static boolean delete(UserDto user) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public boolean delete(UserDto user) {
+        boolean success = false;
+        
+        if(user.getToken().isEmpty() || user.getToken() == null)
+            return success;
+        
+        TokenInfoDto tokendata = Authentication.getTokenInfo(user.getToken());
+        if(tokendata == null)
+            return success;
+        
+        if(user.getUserId() != tokendata.getUserId()){
+            System.out.println("[UsersService]El id del usuario no coinciden con el id del token");
+            return success;
+        }
+        
+        Usuario usuario = UsersMapper.userDtoToUsuario(user);
+        Users_DBAdmin userDb = new Users_DBAdmin();
+        
+        success = userDb.borrarUsuario(usuario);
+        
+        return success;
     }
 
     /**
@@ -61,6 +101,7 @@ public class UsersService {
      *
      */
     public static boolean update(UserDto user) {
+
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
@@ -100,21 +141,19 @@ public class UsersService {
         if (user == null) {
             userdto = new UserDto();
             userdto.setError(new SPError("Usuario sin datos."));
-        } 
-        //verifico si el usuario esta habilitado
+        } //verifico si el usuario esta habilitado
         else if (!user.getActivo()) {
-           
+
             userdto = new UserDto();
             userdto.setError(new SPError("Usuario inhabilitado."));
-        }
-        //comparo passwords
+        } //comparo passwords
         else if (!user.getPassword().equals(Cryptography.encrypt(credentials.getPassword(), credentials.getEmail()))) {
             userdto = new UserDto();
             userdto.setError(new SPError("Correo o contraseña incorrectos."));
         } else {
             //mapper Usuario to UserDto
 
-            userdto = Mapper.UsuarioToUserDto(user);
+            userdto = UsersMapper.UsuarioToUserDto(user);
 
             //crear token para el usuario
             userdto.setToken(Authentication.createToken(userdto));
@@ -130,5 +169,13 @@ public class UsersService {
     public static void logOut(UserDto user) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
-
+    
+    /**
+     * Servicio de generacion de nueva contraseña cuando es olvidada por un usuario.
+     *
+     * @param user UserDto usuario que quiere regenerar la contraseña
+     */
+    public static void passwordReset(UserDto user) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
 }

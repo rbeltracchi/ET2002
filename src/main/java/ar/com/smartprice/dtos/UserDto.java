@@ -28,6 +28,12 @@ public class UserDto {
         
     }
     
+    public UserDto(String email, String password, int userType) {
+        this.email = email;
+        this.password = password;
+        this.userType = userType;
+    }
+    
     public UserDto(String name, String lastName, String email, String cuit, String businessName, String password, int userType, int userId, SPError error, String token) {
         this.name = name;
         this.lastName = lastName;
@@ -211,7 +217,11 @@ public class UserDto {
     public void setToken(String token) {
         this.token = token;
     }
+
+    @Override
+    public String toString() {
+        return "UserDto{" + "name=" + name + ", lastName=" + lastName + ", email=" + email + ", cuit=" + cuit + ", businessName=" + businessName + ", password=" + password + ", userType=" + userType + ", userId=" + userId + ", error=" + error + ", token=" + token + '}';
+    }
     
-    
-    
+
 }
