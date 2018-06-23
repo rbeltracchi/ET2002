@@ -96,7 +96,7 @@ public class Authentication {
             System.out.println("El token ha sido adulterado");
             response.setError(new SPError("No se ha podido verificar el token"));
         }
-        return response;
+        return null;
     }
 
 }
