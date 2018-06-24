@@ -59,24 +59,26 @@ public class UsersService {
      */
     public boolean delete(UserDto user) {
         boolean success = false;
-        
-        if(user.getToken().isEmpty() || user.getToken() == null)
+
+        if (user.getToken().isEmpty() || user.getToken() == null) {
             return success;
-        
+        }
+
         TokenInfoDto tokendata = Authentication.getTokenInfo(user.getToken());
-        if(tokendata == null)
+        if (tokendata == null) {
             return success;
-        
-        if(user.getUserId() != tokendata.getUserId()){
+        }
+
+        if (user.getUserId() != tokendata.getUserId()) {
             System.out.println("[UsersService]El id del usuario no coinciden con el id del token");
             return success;
         }
-        
+
         Usuario usuario = UsersMapper.userDtoToUsuario(user);
         Users_DBAdmin userDb = new Users_DBAdmin();
-        
+
         success = userDb.borrarUsuario(usuario);
-        
+
         return success;
     }
 
@@ -100,9 +102,48 @@ public class UsersService {
      * @return
      *
      */
-    public static boolean update(UserDto user) {
+    public boolean update(UserDto user) {
 
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        boolean success = false;
+
+        if (user == null || user.getToken().isEmpty() || user.getToken() == null) {
+            return success;
+        }
+
+        TokenInfoDto tokendata = Authentication.getTokenInfo(user.getToken());
+        if (tokendata == null) {
+            return success;
+        }
+               
+        if (user.getUserId() != tokendata.getUserId()) {
+            System.out.println("[UsersService]El id del usuario no coinciden con el id del token");
+            return success;
+        } else if (!user.getEmail().equals(tokendata.getEmail())) {
+            System.out.println("[UsersService]El usuario no puede cambiar su email");
+            return success;
+        }
+
+        Users_DBAdmin usersDb = new Users_DBAdmin();
+
+        // verificar si la contraseña cambio... si no cambio no tendriamos que re encriptarlo
+        Usuario passwordMatch = usersDb.getUsuarioByEmail(tokendata.getEmail());
+
+        if (!passwordMatch.getPassword().equals(user.getPassword())) {
+            user.setPassword(Cryptography.encrypt(user.getPassword(), user.getEmail()));
+        }
+        Usuario usuario = UsersMapper.userDtoToUsuario(user);
+
+        switch (user.getUserType()) {
+            case 2:
+                success = usersDb.actualizarUsuario(usuario);
+
+                break;
+            case 3:
+                System.out.println("[UsersService] La actulizacion del oferente no esta implementada");
+                break;
+        }
+
+        return success;
     }
 
     /**
@@ -141,15 +182,21 @@ public class UsersService {
         if (user == null) {
             userdto = new UserDto();
             userdto.setError(new SPError("Usuario sin datos."));
+            System.out.println("Usuario sin datos.");
+            return null;
         } //verifico si el usuario esta habilitado
         else if (!user.getActivo()) {
 
             userdto = new UserDto();
-            userdto.setError(new SPError("Usuario inhabilitado."));
+            userdto.setError(new SPError("Usuario inhabilitado/Borrado."));
+            System.out.println("Usuario inhabilitado/Borrado.");
+            return null;
         } //comparo passwords
         else if (!user.getPassword().equals(Cryptography.encrypt(credentials.getPassword(), credentials.getEmail()))) {
             userdto = new UserDto();
             userdto.setError(new SPError("Correo o contraseña incorrectos."));
+            System.out.println("Correo o contraseña incorrectos.");
+            return null;
         } else {
             //mapper Usuario to UserDto
 
@@ -169,9 +216,10 @@ public class UsersService {
     public static void logOut(UserDto user) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
-    
+
     /**
-     * Servicio de generacion de nueva contraseña cuando es olvidada por un usuario.
+     * Servicio de generacion de nueva contraseña cuando es olvidada por un
+     * usuario.
      *
      * @param user UserDto usuario que quiere regenerar la contraseña
      */
