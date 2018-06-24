@@ -154,6 +154,7 @@ public class UsersService {
      *
      */
     public static UserDto read(UserDto user) {
+        
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
@@ -183,21 +184,22 @@ public class UsersService {
             userdto = new UserDto();
             userdto.setError(new SPError("Usuario sin datos."));
             System.out.println("Usuario sin datos.");
-            return null;
+            //return null;
         } //verifico si el usuario esta habilitado
         else if (!user.getActivo()) {
 
             userdto = new UserDto();
             userdto.setError(new SPError("Usuario inhabilitado/Borrado."));
             System.out.println("Usuario inhabilitado/Borrado.");
-            return null;
+            //return null;
         } //comparo passwords
         else if (!user.getPassword().equals(Cryptography.encrypt(credentials.getPassword(), credentials.getEmail()))) {
             userdto = new UserDto();
             userdto.setError(new SPError("Correo o contraseña incorrectos."));
             System.out.println("Correo o contraseña incorrectos.");
-            return null;
+            //return null;
         } else {
+            System.out.println("Ususario logeado correctamente.");
             //mapper Usuario to UserDto
 
             userdto = UsersMapper.UsuarioToUserDto(user);
@@ -214,7 +216,7 @@ public class UsersService {
      * @param user UserDto usuario que quiere cerrar la session
      */
     public static void logOut(UserDto user) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        user.setToken(null);
     }
 
     /**

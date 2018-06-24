@@ -5,6 +5,7 @@
  */
 package ar.com.smartprice.views;
 
+import ar.com.smartprice.dtos.UserDto;
 import java.awt.BorderLayout;
 
 /**
@@ -12,6 +13,14 @@ import java.awt.BorderLayout;
  * @author ze
  */
 public class FrameWindowMain extends javax.swing.JFrame {
+    
+    //private Controller asd;
+    private UserDto user;
+    
+    public LoginPanel loginPanel;
+    public SignInButtonPanel signInButton;
+    public LogoPanel logoPanel;
+    public SearcherPanel searcher;
 
     /**
      * Creates new form FrameVentPpal
@@ -19,16 +28,16 @@ public class FrameWindowMain extends javax.swing.JFrame {
     public FrameWindowMain() {
         initComponents();
         
-        LoginPanel logP = new LoginPanel();
-        logP.setSize(220, 364);
-        logP.setLocation(2, 5);
+        this.loginPanel = new LoginPanel(user);
+        loginPanel.setSize(220, 364);
+        loginPanel.setLocation(2, 5);
         
         mainPanel1.removeAll();
-        mainPanel1.add(logP, BorderLayout.CENTER);
+        mainPanel1.add(loginPanel, BorderLayout.CENTER);
         mainPanel1.revalidate();
         mainPanel1.repaint();
         
-        SignInButtonPanel signInButton = new SignInButtonPanel();
+        this.signInButton = new SignInButtonPanel();
         signInButton.setSize(220, 100);
         signInButton.setLocation(2, 5);
         
@@ -37,16 +46,16 @@ public class FrameWindowMain extends javax.swing.JFrame {
         mainPanel2.revalidate();
         mainPanel2.repaint();
         
-        LogoPanel logoP = new LogoPanel();
-        logoP.setSize(400, 105);
-        logoP.setLocation(2, 5);
+        this.logoPanel = new LogoPanel();
+        logoPanel.setSize(400, 105);
+        logoPanel.setLocation(2, 5);
         
         mainPanel3.removeAll();
-        mainPanel3.add(logoP, BorderLayout.CENTER);
+        mainPanel3.add(logoPanel, BorderLayout.CENTER);
         mainPanel3.revalidate();
         mainPanel3.repaint();
         
-        SearcherPanel searcher = new SearcherPanel();
+        this.searcher = new SearcherPanel();
         searcher.setSize(520, 380);
         searcher.setLocation(2, 5);
         
@@ -158,41 +167,7 @@ public class FrameWindowMain extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(FrameWindowMain.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(FrameWindowMain.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(FrameWindowMain.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(FrameWindowMain.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-        //</editor-fold>
-
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                //new FrameWindowMain().setVisible(true);
-            }
-        });
-    }
+    
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel mainPanel1;

@@ -5,16 +5,23 @@
  */
 package ar.com.smartprice.views;
 
+import ar.com.smartprice.controllers.Controller;
+import ar.com.smartprice.dtos.CredentialsDto;
+import ar.com.smartprice.dtos.UserDto;
+
 /**
  *
  * @author ze
  */
 public class LoginPanel extends javax.swing.JPanel {
 
+    UserDto user;
+
     /**
      * Creates new form LoginPanel
      */
-    public LoginPanel() {
+    public LoginPanel(UserDto user) {
+        this.user = user;
         initComponents();
     }
 
@@ -35,7 +42,6 @@ public class LoginPanel extends javax.swing.JPanel {
         jLabel3 = new javax.swing.JLabel();
         loginButton = new javax.swing.JButton();
 
-        jLabel4.setIcon(new javax.swing.ImageIcon("C:\\Users\\ze\\Pictures\\User1.jpg")); // NOI18N
         jLabel4.setText("jLabel4");
 
         jLabel5.setText("Usuario ");
@@ -47,8 +53,6 @@ public class LoginPanel extends javax.swing.JPanel {
         });
 
         jLabel6.setText("Contraseña ");
-
-        loginPassField.setText("jPasswordField1");
 
         jLabel3.setFont(new java.awt.Font("Times New Roman", 1, 10)); // NOI18N
         jLabel3.setForeground(new java.awt.Color(0, 0, 204));
@@ -67,14 +71,14 @@ public class LoginPanel extends javax.swing.JPanel {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGap(39, 39, 39)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 144, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, 144, Short.MAX_VALUE)
                     .addComponent(jLabel5)
-                    .addComponent(userLoginTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel6)
-                    .addComponent(loginPassField, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel3)
-                    .addComponent(loginButton, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(userLoginTextField)
+                    .addComponent(loginPassField)
+                    .addComponent(loginButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap(37, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -103,45 +107,55 @@ public class LoginPanel extends javax.swing.JPanel {
     }//GEN-LAST:event_userLoginTextFieldActionPerformed
 
     private void loginButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loginButtonActionPerformed
+
+        // TODO completar con el codigo de sanatizacion de los atributos usuario y contraseña
+        //CredentialsDto credentials = new CredentialsDto(userLoginTextField.getText(), loginPassField.getText());
+        //this.user = Controller.loginView(credentials);
+        //Todo remover este print de prueba.
+        //System.out.println(this.user.toString());
+
+        
+
+        /*
         String user,pass;
         user=userLoginTextField.getText();
         pass=loginPassField.getText();
-
+         */
         //        boolean mailValido = validarEmail(user);
         //
         //        if (mailValido == true) {
-            //            if (user.equals("useroferente@gmail.com") && pass.equals("123456")) {
-                //
-                //                OferenteLoginView loginOfer = new OferenteLoginView();
-                //                loginOfer.setVisible(true);
-                //                this.dispose();
-                //            } else{
-                //                if (user.equals("userconsumidor@gmail.com") && pass.equals("1234")) {
-                    //                    PanelConsLogin pCons = new PanelConsLogin();
-                    //                    pCons.setSize(600, 400);
-                    //                    pCons.setLocation(5, 5);
-                    //
-                    //                    panelPpal1.removeAll();
-                    //                    panelPpal1.add(pCons, BorderLayout.CENTER);
-                    //                    panelPpal1.revalidate();
-                    //                    panelPpal1.repaint();
-                    //                    /*ConsLoginView loginCons = new ConsLoginView();
-                    //                    loginCons.setVisible(true);
-                    //                    this.dispose();*/
-                    //                } else {
-                    //                    JOptionPane.showMessageDialog(null, "El Usuario o la Contraseña es Invalido!!!");
-                    //                    MainView venPPal = new MainView();
-                    //                    venPPal.setVisible(true);
-                    //                    this.dispose();
-                    //
-                    //                }
-                //            }
-            //        } else {
-            //            JOptionPane.showMessageDialog(null, "Ingrese un E-Mail valido!!! ");
-            //            MainView venPPal = new MainView();
-            //            venPPal.setVisible(true);
-            //            this.dispose();
-            //        }
+        //            if (user.equals("useroferente@gmail.com") && pass.equals("123456")) {
+        //
+        //                OferenteLoginView loginOfer = new OferenteLoginView();
+        //                loginOfer.setVisible(true);
+        //                this.dispose();
+        //            } else{
+        //                if (user.equals("userconsumidor@gmail.com") && pass.equals("1234")) {
+        //                    PanelConsLogin pCons = new PanelConsLogin();
+        //                    pCons.setSize(600, 400);
+        //                    pCons.setLocation(5, 5);
+        //
+        //                    panelPpal1.removeAll();
+        //                    panelPpal1.add(pCons, BorderLayout.CENTER);
+        //                    panelPpal1.revalidate();
+        //                    panelPpal1.repaint();
+        //                    /*ConsLoginView loginCons = new ConsLoginView();
+        //                    loginCons.setVisible(true);
+        //                    this.dispose();*/
+        //                } else {
+        //                    JOptionPane.showMessageDialog(null, "El Usuario o la Contraseña es Invalido!!!");
+        //                    MainView venPPal = new MainView();
+        //                    venPPal.setVisible(true);
+        //                    this.dispose();
+        //
+        //                }
+        //            }
+        //        } else {
+        //            JOptionPane.showMessageDialog(null, "Ingrese un E-Mail valido!!! ");
+        //            MainView venPPal = new MainView();
+        //            venPPal.setVisible(true);
+        //            this.dispose();
+        //        }
         //
     }//GEN-LAST:event_loginButtonActionPerformed
 
@@ -151,8 +165,8 @@ public class LoginPanel extends javax.swing.JPanel {
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
-    private javax.swing.JButton loginButton;
-    private javax.swing.JPasswordField loginPassField;
-    private javax.swing.JTextField userLoginTextField;
+    public javax.swing.JButton loginButton;
+    public javax.swing.JPasswordField loginPassField;
+    public javax.swing.JTextField userLoginTextField;
     // End of variables declaration//GEN-END:variables
 }
