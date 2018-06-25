@@ -1,18 +1,16 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package ar.com.smartprice;
 
-import ar.com.smartprice.controllers.ViewsController;
+import ar.com.smartprice.controllers.Controller;
+import ar.com.smartprice.views.MainWindowFrame;
 
 /**
  *
  * @author Andres
  */
 public class MainAPP {
+
     public static void main(String[] args) {
-        
+        MainWindowFrame view = new MainWindowFrame();
+        Controller controller = new Controller(view);
     }
 }
