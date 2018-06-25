@@ -171,7 +171,9 @@ public class UsersService {
 
         if (credentials.getEmail() == null || credentials.getPassword() == null
                 || credentials.getEmail().isEmpty() || credentials.getPassword().isEmpty()) {
-            return null;
+            userdto = new UserDto();
+            userdto.setError(new SPError("Faltan completar campos requeridos."));
+            
         }
 
         Users_DBAdmin usersDb = new Users_DBAdmin();

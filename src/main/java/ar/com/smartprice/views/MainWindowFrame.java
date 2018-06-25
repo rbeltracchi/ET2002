@@ -8,35 +8,42 @@ package ar.com.smartprice.views;
 import ar.com.smartprice.dtos.UserDto;
 import java.awt.BorderLayout;
 
+
 /**
  *
  * @author ze
  */
-public class FrameWindowMain extends javax.swing.JFrame {
-    
-    //private Controller asd;
-    private UserDto user;
+public class MainWindowFrame extends javax.swing.JFrame {
     
     public LoginPanel loginPanel;
-    public SignInButtonPanel signInButton;
+    
+    
+    //userPanel = new javax.swing.JPanel();
+    //public SignInButtonPanel signInButton;
+    public UserSignInPanel userSignInPanel;
     public LogoPanel logoPanel;
     public SearcherPanel searcher;
+    
+
 
     /**
      * Creates new form FrameVentPpal
      */
-    public FrameWindowMain() {
+    public MainWindowFrame() {
         initComponents();
         
-        this.loginPanel = new LoginPanel(user);
+        loginPanel = new LoginPanel();
         loginPanel.setSize(220, 364);
         loginPanel.setLocation(2, 5);
         
-        mainPanel1.removeAll();
-        mainPanel1.add(loginPanel, BorderLayout.CENTER);
-        mainPanel1.revalidate();
-        mainPanel1.repaint();
+        userPanel.removeAll();
+        userPanel.add(loginPanel, BorderLayout.CENTER);
+        userPanel.revalidate();
+        userPanel.repaint();
         
+        this.userSignInPanel = new UserSignInPanel();
+        
+        /*
         this.signInButton = new SignInButtonPanel();
         signInButton.setSize(220, 100);
         signInButton.setLocation(2, 5);
@@ -45,6 +52,7 @@ public class FrameWindowMain extends javax.swing.JFrame {
         mainPanel2.add(signInButton, BorderLayout.CENTER);
         mainPanel2.revalidate();
         mainPanel2.repaint();
+        */
         
         this.logoPanel = new LogoPanel();
         logoPanel.setSize(400, 105);
@@ -63,6 +71,18 @@ public class FrameWindowMain extends javax.swing.JFrame {
         mainPanel4.add(searcher, BorderLayout.CENTER);
         mainPanel4.revalidate();
         mainPanel4.repaint();
+        
+    }
+    
+    public void createAndShowUserSignPanel(){
+        //this.userSignInPanel = new UserSignInPanel();
+        userSignInPanel.setSize(220, 600);
+        userSignInPanel.setLocation(0, 5);
+        
+        userPanel.removeAll();
+        userPanel.add(userSignInPanel, BorderLayout.CENTER);
+        userPanel.revalidate();
+        userPanel.repaint();
     }
 
     /**
@@ -74,8 +94,7 @@ public class FrameWindowMain extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        mainPanel1 = new javax.swing.JPanel();
-        mainPanel2 = new javax.swing.JPanel();
+        userPanel = new javax.swing.JPanel();
         mainPanel3 = new javax.swing.JPanel();
         mainPanel4 = new javax.swing.JPanel();
 
@@ -83,30 +102,17 @@ public class FrameWindowMain extends javax.swing.JFrame {
         setTitle("SmartPrice\n");
         setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
 
-        mainPanel1.setPreferredSize(new java.awt.Dimension(220, 364));
+        userPanel.setPreferredSize(new java.awt.Dimension(220, 364));
 
-        javax.swing.GroupLayout mainPanel1Layout = new javax.swing.GroupLayout(mainPanel1);
-        mainPanel1.setLayout(mainPanel1Layout);
-        mainPanel1Layout.setHorizontalGroup(
-            mainPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+        javax.swing.GroupLayout userPanelLayout = new javax.swing.GroupLayout(userPanel);
+        userPanel.setLayout(userPanelLayout);
+        userPanelLayout.setHorizontalGroup(
+            userPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGap(0, 220, Short.MAX_VALUE)
         );
-        mainPanel1Layout.setVerticalGroup(
-            mainPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 364, Short.MAX_VALUE)
-        );
-
-        mainPanel2.setPreferredSize(new java.awt.Dimension(220, 100));
-
-        javax.swing.GroupLayout mainPanel2Layout = new javax.swing.GroupLayout(mainPanel2);
-        mainPanel2.setLayout(mainPanel2Layout);
-        mainPanel2Layout.setHorizontalGroup(
-            mainPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 220, Short.MAX_VALUE)
-        );
-        mainPanel2Layout.setVerticalGroup(
-            mainPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 100, Short.MAX_VALUE)
+        userPanelLayout.setVerticalGroup(
+            userPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 0, Short.MAX_VALUE)
         );
 
         mainPanel3.setPreferredSize(new java.awt.Dimension(400, 105));
@@ -115,7 +121,7 @@ public class FrameWindowMain extends javax.swing.JFrame {
         mainPanel3.setLayout(mainPanel3Layout);
         mainPanel3Layout.setHorizontalGroup(
             mainPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 400, Short.MAX_VALUE)
+            .addGap(0, 542, Short.MAX_VALUE)
         );
         mainPanel3Layout.setVerticalGroup(
             mainPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -126,11 +132,11 @@ public class FrameWindowMain extends javax.swing.JFrame {
         mainPanel4.setLayout(mainPanel4Layout);
         mainPanel4Layout.setHorizontalGroup(
             mainPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 520, Short.MAX_VALUE)
+            .addGap(0, 0, Short.MAX_VALUE)
         );
         mainPanel4Layout.setVerticalGroup(
             mainPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 380, Short.MAX_VALUE)
+            .addGap(0, 467, Short.MAX_VALUE)
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -139,29 +145,24 @@ public class FrameWindowMain extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(mainPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(mainPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addComponent(userPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(mainPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(mainPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(32, Short.MAX_VALUE))
+                    .addComponent(mainPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, 542, Short.MAX_VALUE)
+                    .addComponent(mainPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(mainPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(mainPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(userPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 578, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(mainPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(mainPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(98, Short.MAX_VALUE))
+                        .addComponent(mainPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                .addContainerGap())
         );
 
         pack();
@@ -170,9 +171,8 @@ public class FrameWindowMain extends javax.swing.JFrame {
     
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JPanel mainPanel1;
-    private javax.swing.JPanel mainPanel2;
     private javax.swing.JPanel mainPanel3;
     private javax.swing.JPanel mainPanel4;
+    public javax.swing.JPanel userPanel;
     // End of variables declaration//GEN-END:variables
 }
