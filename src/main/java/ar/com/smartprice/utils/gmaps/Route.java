@@ -37,8 +37,8 @@ public class Route extends MapsJava{
      * Indica el tipo de medio de transporte de la ruta. Los valores son:<br/>
      * <b>driving:</b> proporciona rutas estándar para llegar en coche a través de la red de carreteras.<br/>
      * <b>walking:</b> proporciona rutas a pie a través de aceras y rutas peatonales (según disponibilidad).<br/>
-     * <b>driving:</b> proporciona rutas para llegar en bicicleta a través de carriles bici y vías preferenciales para bicicletas (según disponibilidad).<br/>
-     * <b>driving:</b> solicita indicaciones a través de rutas de transporte público (según disponibilidad) (NO FUNCIONA ACTUALMENTE).
+     * <b>bicycling:</b> proporciona rutas para llegar en bicicleta a través de carriles bici y vías preferenciales para bicicletas (según disponibilidad).<br/>
+     * <b>transit:</b> solicita indicaciones a través de rutas de transporte público (según disponibilidad) (NO FUNCIONA ACTUALMENTE).
      */
     public enum mode{driving,walking,bicycling,transit}
     

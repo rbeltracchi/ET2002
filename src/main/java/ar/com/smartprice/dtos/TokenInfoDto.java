@@ -5,8 +5,6 @@
  */
 package ar.com.smartprice.dtos;
 
-import ar.com.smartprice.utils.SPError;
-
 /**
  *
  * @author Andres
@@ -16,7 +14,7 @@ public class TokenInfoDto{
     private int userId;
     private String email;
     private int userType;
-    private SPError error;
+    private SPErrorDto error;
 
     public TokenInfoDto() {
     }
@@ -45,11 +43,11 @@ public class TokenInfoDto{
         this.userType = userType;
     }
 
-    public SPError getError() {
+    public SPErrorDto getError() {
         return error;
     }
 
-    public void setError(SPError error) {
+    public void setError(SPErrorDto error) {
         this.error = error;
     }
 }

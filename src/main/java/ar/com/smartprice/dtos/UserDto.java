@@ -5,8 +5,6 @@
  */
 package ar.com.smartprice.dtos;
 
-import ar.com.smartprice.utils.SPError;
-
 /**
  *
  * @author Ezequiel
@@ -14,18 +12,27 @@ import ar.com.smartprice.utils.SPError;
 public class UserDto {
     
     private String name;
-    private String lastName;
+    
     private String email;
     private String cuit;
     private String businessName;
     private String password;
+    private String direccion;
     private int userType;
     private int userId;
-    private SPError error;
+    private SPErrorDto error;
     private String token;
 
     public UserDto(){
         
+    }
+
+    public String getDireccion() {
+        return direccion;
+    }
+
+    public void setDireccion(String direccion) {
+        this.direccion = direccion;
     }
     
     public UserDto(String email, String password, int userType) {
@@ -34,15 +41,15 @@ public class UserDto {
         this.userType = userType;
     }
     
-    public UserDto(String name, String lastName, String email, String cuit, String businessName, String password, int userType, int userId, SPError error, String token) {
-        this.name = name;
-        this.lastName = lastName;
+    public UserDto(String email, String password, int userType, String name,String direccion,  String cuit, String businessName, int userId, SPErrorDto error, String token) {
+        this.userId = userId;
         this.email = email;
-        this.cuit = cuit;
-        this.businessName = businessName;
         this.password = password;
         this.userType = userType;
-        this.userId = userId;
+        this.name = name;
+        this.direccion=direccion;
+        this.cuit = cuit;
+        this.businessName = businessName;
         this.error = error;
         this.token = token;
     }
@@ -63,21 +70,7 @@ public class UserDto {
         this.name = name;
     }
     
-    /**
-     * @author Andres 
-     * @return Retorna un {@code String} con el apellido de un usuario oferente
-     */
-    public String getLastName() {
-        return lastName;
-    }
-    /**
-     * @author Andres
-     * @param  lastName
-     *         Recibe un {@code String} para setear el apellido a usuario oferente.
-     */
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
-    }
+
     
     /**
      * @author Andres 
@@ -171,7 +164,7 @@ public class UserDto {
      * @author Andres
      * @return  Retorna un {@code int} con el numero de id del usuario.
      */
-    public int getUserId() {
+    public int getId() {
         return userId;
     }
 
@@ -180,24 +173,24 @@ public class UserDto {
      * @param  userId
      *         Recibe un {@code int} para setear el numero de id al usuario.
      */
-    public void setUserId(int userId) {
+    public void setId(int userId) {
         this.userId = userId;
     }
     
     /**
      * @author Andres
-     * @return  Retorna un {@link ar.com.smartprice.utils.SPError}.
+     * @return  Retorna un {@link ar.com.smartprice.utils.SPErrorDto}.
      */
-    public SPError getError() {
+    public SPErrorDto getError() {
         return error;
     }
 
     /**
      * @author Andres
      * @param  error
-     *         Error tipo {@link ar.com.smartprice.utils.SPError}
+     *         Error tipo {@link ar.com.smartprice.utils.SPErrorDto}
      */
-    public void setError(SPError error) {
+    public void setError(SPErrorDto error) {
         this.error = error;
     }
 
@@ -220,8 +213,18 @@ public class UserDto {
 
     @Override
     public String toString() {
-        return "UserDto{" + "name=" + name + ", lastName=" + lastName + ", email=" + email + ", cuit=" + cuit + ", businessName=" + businessName + ", password=" + password + ", userType=" + userType + ", userId=" + userId + ", error=" + error + ", token=" + token + '}';
+        return "UserDto{" + "name=" + name + ", email=" + email + ", cuit=" + cuit + ", businessName=" + businessName + ", password=" + password + ", direccion=" + direccion + ", userType=" + userType + ", userId=" + userId + ", error=" + error + ", token=" + token + '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (o instanceof UserDto){
+            UserDto other = (UserDto) o;
+            return this.getId()== other.getId();
+        }
+        return super.equals(o); //To change body of generated methods, choose Tools | Templates.
     }
     
+
 
 }

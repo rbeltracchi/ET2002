@@ -1,16 +1,17 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package ar.com.smartprice.models.services;
 
-import ar.com.smartprice.models.Categoria;
+import ar.com.smartprice.dtos.AdministratorDto;
+import ar.com.smartprice.dtos.ArbolCategoriesDto;
+import ar.com.smartprice.models.persistence.Category_DBAdmin;
+import ar.com.smartprice.dtos.CategoryDto;
+import ar.com.smartprice.models.entities.Categoria;
+import static ar.com.smartprice.models.mappers.CategoryMapper.CategoriaToCategoryDto;
+import java.util.ArrayList;
 import java.util.List;
-import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.Persistence;
-import javax.persistence.TypedQuery;
+import static ar.com.smartprice.models.mappers.CategoryMapper.CategoryDtoToCategoria;
+import ar.com.smartprice.utils.Authentication;
+import java.util.Hashtable;
+import java.util.Vector;
 
 /**
  *
@@ -18,105 +19,103 @@ import javax.persistence.TypedQuery;
  */
 public class CategoriesService {
 
-    EntityManagerFactory emf = Persistence.createEntityManagerFactory("SmartPricePU");
-    EntityManager em = null;
+    private static Category_DBAdmin c = new Category_DBAdmin();
 
-    //Se obtienen todas las categorías cargadas.
-    public List<Categoria> obtenerTodasCategorias() {
-        if (em == null) {
-            em = emf.createEntityManager();
-        }
-        TypedQuery<Categoria> c = em.createNamedQuery("Categoria.findAll", Categoria.class);
-        List<Categoria> categorias = c.getResultList();
-        return categorias;
+    public CategoriesService() {
+        
     }
 
-    public Categoria getCategoriaPorID(int id) {
-
-        if (em == null) {
-            em = emf.createEntityManager();
+    public static Categoria create(CategoryDto category, AdministratorDto requester) {
+        if (requester == null || !Authentication.verifyAdministrator(requester)) {
+            System.out.println("Administrador invalido");
+            return null;
         }
-        em.getTransaction().begin();
-        List<Categoria> encontradas = em.createNamedQuery("Categoria.findByIdCategoria", Categoria.class).setParameter("idCategoria", id).getResultList();
-        Categoria c;
-        if (encontradas.isEmpty()) {
-            c = null;
+        if (category == null) {
+            return null;
+        }
+        Categoria persistida;
+        if (category.getCategoriaPadre() != null) {
+            persistida = c.cargarCategoria(category.getName(), category.getCategoriaPadre().getName());
         } else {
-            c = encontradas.get(0);
+            persistida = c.cargarCategoria(category.getName(), null);
         }
-        em.getTransaction().commit();
-        return c;
 
+        return persistida;
     }
 
-    public Categoria getCategoria(String cat) {
+    public static CategoryDto readAlla() {
+        CategoryDto categ = new CategoryDto();
 
-        if (em == null) {
-            em = emf.createEntityManager();
+        List result = new ArrayList();
+        List<Categoria> listaCategorias;
+        listaCategorias = c.obtenerTodasCategorias();
+        for (Categoria listaCategoria : listaCategorias) {
+            result.add(CategoriaToCategoryDto(listaCategoria));
         }
-        em.getTransaction().begin();
-        List<Categoria> encontradas = em.createNamedQuery("Categoria.findByNombre", Categoria.class).setParameter("nombre", cat).getResultList();
-        Categoria c;
-        if (encontradas.isEmpty()) {
-            c = null;
-        } else {
-            c = encontradas.get(0);
-        }
-        em.getTransaction().commit();
-        return c;
+
+        categ.setCategories(result);
+
+        return categ;
     }
-
-    //Carga una categoria nueva. Si ya existia carga el resto de los datos (id, padre, etc)
-    public Categoria cargarCategoria(String cat) {
-        //Carga una nueva marca, o si ya existe devuelve su id
-        Categoria c = this.getCategoria(cat);
-        if (c == null) {
-            if (em == null) {
-                em = emf.createEntityManager();
+    public static ArbolCategoriesDto getArbol(){
+        List<Categoria> listaCategorias = c.obtenerTodasCategorias();
+        if (listaCategorias==null || listaCategorias.isEmpty())
+            return null;
+        Vector<String> padres = new Vector<>();
+        Hashtable<String,Vector<CategoryDto>> hijos = new Hashtable();
+        for (Categoria cat: listaCategorias){
+            cargarArbol(CategoriaToCategoryDto(cat),padres,hijos);
+        }
+        ArbolCategoriesDto retorno = new ArbolCategoriesDto();
+        retorno.setPadres(padres);
+        retorno.setHijos(hijos);
+        return retorno;
+    }
+    private static void cargarArbol(CategoryDto c, Vector<String> padres, Hashtable<String,Vector<CategoryDto>> hijos){
+        if (c.getCategoriaPadre()==null){
+            if (!padres.contains(c.getName())){
+                padres.add(c.getName());
             }
-            em.getTransaction().begin();
-            c = new Categoria(cat);
-            em.persist(c);
-            em.getTransaction().commit();
         }
-
-        return c;
+        else{
+            CategoryDto padre = c.getCategoriaPadre();
+             cargarArbol(padre, padres, hijos);
+             if (hijos.get(padre.getName())==null){
+                    Vector<CategoryDto> aux = new Vector<>();
+                    aux.add(c);
+                    hijos.put(padre.getName(), aux);
+                }
+             else{
+                 hijos.get(padre.getName()).add(c);
+             }
+            }        
     }
 
-    public boolean actualizarCategoria(Categoria categoria) {
-
-        boolean exito = false;
-        if (em == null) {
-            em = emf.createEntityManager();
+    public static List<CategoryDto> readall() {
+        List<CategoryDto> result;
+        result = new ArrayList();
+        List<Categoria> listaCategorias;
+        listaCategorias = c.obtenerTodasCategorias();
+        for (Categoria listaCategoria : listaCategorias) {
+            result.add(CategoriaToCategoryDto(listaCategoria));
         }
-        em.getTransaction().begin();
-
-        if (this.getCategoriaPorID(categoria.getIdCategoria()) == null) {
-            exito = false;
-        } else {
-            em.merge(categoria);
-
-            exito = true;
-        }
-        em.getTransaction().commit();
-        return exito;
+        return result;
     }
 
-    public boolean borrarCategoria(Categoria categoria) {
-        boolean exito = false;
-        if (em == null) {
-            em = emf.createEntityManager();
-        }
-        em.getTransaction().begin();
+    public static CategoryDto getCategoryByName(String name) {
+        return CategoriaToCategoryDto(c.getCategoria(name));
+    }
 
-        if (this.getCategoriaPorID(categoria.getIdCategoria()) == null) {
-            exito = false;
-        } else {
-            em.remove(categoria);
+    public static CategoryDto getCategoryById(int id) {
+        //TODO retornar una categoria
+        return CategoriaToCategoryDto(c.getCategoriaPorID(id));
+    }
 
-            exito = true;
-        }
-        em.getTransaction().commit();
-        return exito;
+    public static boolean update(CategoryDto category) {
+        return c.actualizarCategoria(CategoryDtoToCategoria(category));
+    }
+
+    public static boolean delete(CategoryDto category) {
+        return c.borrarCategoria(CategoryDtoToCategoria(category));
     }
 }

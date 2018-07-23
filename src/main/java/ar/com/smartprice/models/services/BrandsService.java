@@ -5,11 +5,12 @@
  */
 package ar.com.smartprice.models.services;
 
-import ar.com.smartprice.models.Marca;
+import ar.com.smartprice.dtos.BrandDto;
+import ar.com.smartprice.models.entities.Marca;
+import ar.com.smartprice.models.mappers.BrandMapper;
+import ar.com.smartprice.models.persistence.Brand_DBAdmin;
 import java.util.List;
 import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.Persistence;
 
 /**
  *
@@ -17,92 +18,51 @@ import javax.persistence.Persistence;
  */
 public class BrandsService {
 
-    EntityManagerFactory emf = Persistence.createEntityManagerFactory("SmartPricePU");
-    EntityManager em = null;
+    private static Brand_DBAdmin brandDB = new Brand_DBAdmin();
 
-    //Carga una marca nueva, si ya existia trae el resto de los datos
-    public Marca cargarMarca(String marca) {
-        //Carga una nueva marca, o si ya existe devuelve su id
-        Marca m = this.getMarca(marca);
-        if (m == null) {
-            if (em == null) {
-                em = emf.createEntityManager();
-            }
-            em.getTransaction().begin();
-            m = new Marca(marca);
-            em.persist(m);
-            em.getTransaction().commit();
-        }
-        return m;
+    public static boolean create(BrandDto brand) {
+       
+        Marca marca = BrandMapper.BrandDtoToMarca(brand);
+
+        return brandDB.create(marca);
     }
 
-    public Marca getMarca(String marca) {
-        if (em == null) {
-            em = emf.createEntityManager();
+    public static BrandDto getMarca(String marca) {
+        BrandDto brand;
+
+        brand = BrandMapper.MarcaToBrandDto(brandDB.getMarca(marca));
+
+        if (brand.getBrandName() == null) {
+            System.out.println("Error al recuperar la marca");
+            return null;
         }
-        em.getTransaction().begin();
-        List<Marca> encontradas = em.createNamedQuery("Marca.findByNombre", Marca.class).setParameter("nombre", marca).getResultList();
-        Marca m;
-        if (encontradas.isEmpty()) {
-            m = null;
-        } else {
-            m = encontradas.get(0);
-        }
-        em.getTransaction().commit();
-        return m;
+
+        return brand;
     }
 
-    public Marca getMarcaPorId(int id) {
-        if (em == null) {
-            em = emf.createEntityManager();
+    public static BrandDto getMarcaPorId(int id) {
+        BrandDto brand = BrandMapper.MarcaToBrandDto(brandDB.getMarcaPorId(id));
+
+        if (brand.getBrandName() == null) {
+            System.out.println("Error al recuperar la marca por id");
+            return null;
         }
-        em.getTransaction().begin();
-        List<Marca> encontradas = em.createNamedQuery("Marca.findByIdmarcas", Marca.class).setParameter("idMarca", id).getResultList();
-        Marca m;
-        if (encontradas.isEmpty()) {
-            m = null;
-        } else {
-            m = encontradas.get(0);
-        }
-        em.getTransaction().commit();
-        return m;
+
+        return brand;
     }
 
-    public boolean actualizarMarca(Marca marca) {
+    public static boolean actualizarMarca(BrandDto brand) {
 
-        boolean exito = false;
-        if (em == null) {
-            em = emf.createEntityManager();
-        }
-        em.getTransaction().begin();
+        boolean success = brandDB.actualizarMarca(BrandMapper.BrandDtoToMarca(brand));
 
-        if (this.getMarcaPorId(marca.getIdmarca()) == null) {
-            exito = false;
-        } else {
-            em.merge(marca);
-
-            exito = true;
-        }
-        em.getTransaction().commit();
-        return exito;
+        return success;
     }
 
-    public boolean borrarMarca(Marca marca) {
-        boolean exito = false;
-        if (em == null) {
-            em = emf.createEntityManager();
-        }
-        em.getTransaction().begin();
+    public static boolean borrarMarca(BrandDto brand) {
 
-        if (this.getMarcaPorId(marca.getIdmarca()) == null) {
-            exito = false;
-        } else {
-            em.remove(marca);
+        boolean success = brandDB.borrarMarca(BrandMapper.BrandDtoToMarca(brand));
 
-            exito = true;
-        }
-        em.getTransaction().commit();
-        return exito;
+        return success;
     }
 
 }

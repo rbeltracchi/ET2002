@@ -1,72 +1,94 @@
-
 package ar.com.smartprice.dtos;
 
-import ar.com.smartprice.utils.SPError;
+import java.util.List;
 
 /**
  *
  * @author Andres
  */
-public class AdministratorDto {
-    
-    private String email;
-    private String password;
-    private int userType;
-    private int userId;
-    private SPError error;
-    private String token;
+public class AdministratorDto extends UserDto{
 
+    private int userType;
+    private int id;
+    private boolean active;
+    private String email;
+    private String name;
+    private String password;
+    private String token;
+    
     public AdministratorDto() {
     }
 
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
+    @Override
     public int getUserType() {
         return userType;
     }
 
+    @Override
     public void setUserType(int userType) {
         this.userType = userType;
     }
 
-    public int getUserId() {
-        return userId;
+    @Override
+    public int getId() {
+        return id;
     }
 
-    public void setUserId(int userId) {
-        this.userId = userId;
+    @Override
+    public void setId(int id) {
+        this.id = id;
     }
 
-    public SPError getError() {
-        return error;
+    public boolean getActive() {
+        return active;
     }
 
-    public void setError(SPError error) {
-        this.error = error;
+    public void setActive(boolean active) {
+        this.active = active;
     }
 
+    @Override
+    public String getEmail() {
+        return email;
+    }
+
+    @Override
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    @Override
+    public String getName() {
+        return name;
+    }
+
+    @Override
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    @Override
+    public String getPassword() {
+        return password;
+    }
+
+    @Override
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    @Override
     public String getToken() {
         return token;
     }
 
+    @Override
     public void setToken(String token) {
         this.token = token;
     }
-    
-    
-    
+
+    @Override
+    public String toString() {
+        return "AdministratorDto{" + "userType=" + userType + ", id=" + id + ", active=" + active + ", email=" + email + ", name=" + name + ", password=" + password + ", token=" + token + '}';
+    }
 }

@@ -1,5 +1,6 @@
 package ar.com.smartprice.utils;
 
+import ar.com.smartprice.dtos.AdministratorDto;
 import ar.com.smartprice.dtos.TokenInfoDto;
 import ar.com.smartprice.dtos.UserDto;
 import io.jsonwebtoken.Claims;
@@ -45,7 +46,7 @@ public class Authentication {
             Date expiration = new Date(expMillis);
             
             return Jwts.builder()
-                    .setId("" + user.getUserId())
+                    .setId("" + user.getId())
                     
                     .setIssuedAt(now)
                     .setExpiration(expiration)
@@ -69,6 +70,10 @@ public class Authentication {
      * 
      */
     public static TokenInfoDto getTokenInfo(String token) {
+        
+        if(token.isEmpty())
+            return null;
+        
         TokenInfoDto response = new TokenInfoDto();
         try {
             String jwtr = token;
@@ -89,14 +94,32 @@ public class Authentication {
             
         } catch (UnsupportedEncodingException ex) {
             Logger.getLogger(Authentication.class.getName()).log(Level.SEVERE, null, ex);
+            return null;
         } catch (ExpiredJwtException ex) {
             System.out.println("El token ha expirado");
-            response.setError(new SPError("El token ha expirado"));
+            //response.setError(new SPError("El token ha expirado"));
+            return null;
         } catch (SignatureException ex) {
             System.out.println("El token ha sido adulterado");
-            response.setError(new SPError("No se ha podido verificar el token"));
+            //response.setError(new SPError("No se ha podido verificar el token"));
+            return null;
         }
-        return null;
+    }
+    
+    /**
+     * Verifica si el token corresponde a un Administrador
+     * @param requester recibe un AdministratorDto
+     * @return boolean true si el tipo de usuario es administrador
+     * 
+     */
+    public static boolean verifyAdministrator(AdministratorDto requester) {
+
+        TokenInfoDto requesterTokenInfo = Authentication.getTokenInfo(requester.getToken());
+
+        if (requesterTokenInfo == null) {
+            return false;
+        }
+        return requesterTokenInfo.getUserType() == 1;
     }
 
 }

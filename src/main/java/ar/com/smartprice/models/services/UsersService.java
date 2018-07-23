@@ -1,15 +1,15 @@
 package ar.com.smartprice.models.services;
 
+import ar.com.smartprice.models.persistence.Users_DBAdmin;
 import ar.com.smartprice.dtos.AdministratorDto;
 import ar.com.smartprice.dtos.CredentialsDto;
 import ar.com.smartprice.dtos.TokenInfoDto;
 import ar.com.smartprice.dtos.UserDto;
-import ar.com.smartprice.models.Oferente;
-import ar.com.smartprice.models.Usuario;
+import ar.com.smartprice.models.entities.Usuario;
 import ar.com.smartprice.utils.Authentication;
 import ar.com.smartprice.utils.Cryptography;
 import ar.com.smartprice.models.mappers.UsersMapper;
-import ar.com.smartprice.utils.SPError;
+import ar.com.smartprice.dtos.SPErrorDto;
 
 /**
  * @author Andres
@@ -18,7 +18,14 @@ import ar.com.smartprice.utils.SPError;
  * Servicios de usuarios
  */
 public class UsersService {
+    private static Users_DBAdmin userDB= new Users_DBAdmin();
+    
 
+    public UsersService() {
+    }
+    
+    
+    
     /**
      * Servicio para la creacion de un usuario.
      *
@@ -37,16 +44,9 @@ public class UsersService {
         user.setPassword(Cryptography.encrypt(user.getPassword(), user.getEmail()));
 
         Usuario usuario = UsersMapper.userDtoToUsuario(user);
-        Users_DBAdmin userDb = new Users_DBAdmin();
-
-        switch (user.getUserType()) {
-            case 2:
-                success = userDb.insertarUsuario(usuario);
-                break;
-            case 3:
-                System.out.println("[UsersService] La creacion del oferente no esta implementado");
-                break;
-        }
+        
+        success = userDB.insertarUsuario(usuario);
+       
         return success;
     }
 
@@ -60,7 +60,7 @@ public class UsersService {
     public boolean delete(UserDto user) {
         boolean success = false;
 
-        if (user.getToken().isEmpty() || user.getToken() == null) {
+        if (user == null || user.getToken().isEmpty() || user.getToken() == null) {
             return success;
         }
 
@@ -69,15 +69,16 @@ public class UsersService {
             return success;
         }
 
-        if (user.getUserId() != tokendata.getUserId()) {
+        if (user.getId() != tokendata.getUserId()) {
             System.out.println("[UsersService]El id del usuario no coinciden con el id del token");
             return success;
         }
 
         Usuario usuario = UsersMapper.userDtoToUsuario(user);
-        Users_DBAdmin userDb = new Users_DBAdmin();
+        System.out.println("[USER SERVICE DELETE] "+ usuario.toString());
+        
 
-        success = userDb.borrarUsuario(usuario);
+        success = userDB.borrarUsuario(usuario);
 
         return success;
     }
@@ -91,7 +92,7 @@ public class UsersService {
      * usuario que realizar la operacion
      * @return
      */
-    public static boolean delete(UserDto user, AdministratorDto userRequest) {
+    public boolean delete(UserDto user, AdministratorDto userRequest) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
@@ -115,7 +116,7 @@ public class UsersService {
             return success;
         }
                
-        if (user.getUserId() != tokendata.getUserId()) {
+        if (user.getId() != tokendata.getUserId()) {
             System.out.println("[UsersService]El id del usuario no coinciden con el id del token");
             return success;
         } else if (!user.getEmail().equals(tokendata.getEmail())) {
@@ -123,10 +124,10 @@ public class UsersService {
             return success;
         }
 
-        Users_DBAdmin usersDb = new Users_DBAdmin();
+        
 
         // verificar si la contraseña cambio... si no cambio no tendriamos que re encriptarlo
-        Usuario passwordMatch = usersDb.getUsuarioByEmail(tokendata.getEmail());
+        Usuario passwordMatch = userDB.getUsuarioByEmail(tokendata.getEmail());
 
         if (!passwordMatch.getPassword().equals(user.getPassword())) {
             user.setPassword(Cryptography.encrypt(user.getPassword(), user.getEmail()));
@@ -135,27 +136,16 @@ public class UsersService {
 
         switch (user.getUserType()) {
             case 2:
-                success = usersDb.actualizarUsuario(usuario);
+                success = userDB.actualizarUsuario(usuario);
 
                 break;
             case 3:
-                System.out.println("[UsersService] La actulizacion del oferente no esta implementada");
+                success = userDB.actualizarUsuario(usuario);
+                System.out.println("[UsersService] La actualizacion del oferente no esta implementada");
                 break;
         }
 
         return success;
-    }
-
-    /**
-     * Servicio para obtener un usuario.
-     *
-     * @param user UserDto
-     * @return
-     *
-     */
-    public static UserDto read(UserDto user) {
-        
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     /**
@@ -167,38 +157,39 @@ public class UsersService {
      */
     //authentication
     public static UserDto logIn(CredentialsDto credentials) {
-        UserDto userdto;
-
+        UserDto userdto = null;
+        System.out.println(credentials.toString());
         if (credentials.getEmail() == null || credentials.getPassword() == null
                 || credentials.getEmail().isEmpty() || credentials.getPassword().isEmpty()) {
             userdto = new UserDto();
-            userdto.setError(new SPError("Faltan completar campos requeridos."));
+            userdto.setError(new SPErrorDto("Faltan completar campos requeridos."));
             
         }
 
-        Users_DBAdmin usersDb = new Users_DBAdmin();
-
-        Usuario user = usersDb.getUsuarioByEmail(credentials.getEmail());
-
+        Usuario user = null;
+        user = userDB.getUsuarioByEmail(credentials.getEmail());
+        if(user != null)
+            System.out.println("[UsersService login] "+ user.toString() );
+        
         //??
         //Oferente user = usersDb.getByEmail(credentials.getEmail());
         if (user == null) {
             userdto = new UserDto();
-            userdto.setError(new SPError("Usuario sin datos."));
-            System.out.println("Usuario sin datos.");
+            userdto.setError(new SPErrorDto("Correo o contraseña incorrectos."));
+            
             //return null;
         } //verifico si el usuario esta habilitado
-        else if (!user.getActivo()) {
-
-            userdto = new UserDto();
-            userdto.setError(new SPError("Usuario inhabilitado/Borrado."));
-            System.out.println("Usuario inhabilitado/Borrado.");
-            //return null;
-        } //comparo passwords
+         //comparo passwords
         else if (!user.getPassword().equals(Cryptography.encrypt(credentials.getPassword(), credentials.getEmail()))) {
             userdto = new UserDto();
-            userdto.setError(new SPError("Correo o contraseña incorrectos."));
-            System.out.println("Correo o contraseña incorrectos.");
+            userdto.setError(new SPErrorDto("Correo o contraseña incorrectos."));
+            
+            //return null;
+        }else if (!user.getActivo()) {
+
+            userdto = new UserDto();
+            userdto.setError(new SPErrorDto("Usuario inhabilitado/Borrado."));
+            System.out.println("Usuario inhabilitado/Borrado.");
             //return null;
         } else {
             System.out.println("Ususario logeado correctamente.");
@@ -217,8 +208,9 @@ public class UsersService {
      *
      * @param user UserDto usuario que quiere cerrar la session
      */
-    public static void logOut(UserDto user) {
-        user.setToken(null);
+    public static UserDto logOut(UserDto user) {
+        return new UserDto();
+        //user.setToken(null);
     }
 
     /**
